@@ -1,27 +1,28 @@
-﻿<%@ Page Title="About" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="About.aspx.cs" Inherits="SW.About" %>
+﻿<%@ Page Title="Dashboard" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Dashboard.aspx.cs" Inherits="SW.Dashboard" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <style>
-        body{
-            background-color:#f8f9fc;
+        body {
+            background-color: #f8f9fc;
         }
+
         .card-header {
             font-weight: 600;
             font-size: .8rem;
-            border:none;
-            background-color:#13328212;
-
+            border: none;
+            background-color: #13328212;
         }
+
         .chart-container .card-header {
             font-weight: 600;
             font-size: 1rem;
-            color:#4e73df!important;
+            color: #4e73df !important;
         }
 
         .card {
             margin: 10px;
             box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
-            border:none;
+            border: none;
         }
 
         .dashboard {
@@ -94,6 +95,16 @@
                     </div>
                 </div>
             </div>
+            <!-- Numero de queixas-->
+            <div class="">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-warning text-white">Registred Grievances</div>
+                    <div class="card-body">
+                        <h4>
+                            <asp:Label ID="lblNrQueixas" runat="server" Text="0"></asp:Label></h4>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Gráficos -->
@@ -141,10 +152,61 @@
                 </div>
             </div>
         </div>
-    </div>
-    
 
-   
+        <!-- Gráficos Queixa-->
+        <div class="row">
+            <!-- Mapa ou outro gráfico, conforme necessidade -->
+            <div class="col-md-6 chart-container">
+                <div class="card shadow-sm">
+                    <div class="card-header">Grievance regitred by day</div>
+                    <div class="card-body">
+                        <!-- Mapa ou gráfico -->
+                        <canvas id="lineChartQueixas"></canvas>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gráfico adicional -->
+            <div class="col-md-6 chart-container">
+                <div class="card shadow-sm">
+                    <div class="card-header">Grievance regitred by Sex</div>
+                    <div class="card-body">
+                        <canvas id="sexChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="row">
+            <!-- Mapa ou outro gráfico, conforme necessidade -->
+            <div class="col-md-6 chart-container">
+                <div class="card shadow-sm">
+                    <div class="card-header">Grievance regitred by Type</div>
+                    <div class="card-body">
+                        <!-- Mapa ou gráfico -->
+                        <canvas id="TypeChart"></canvas>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gráfico adicional -->
+            <div class="col-md-6 chart-container">
+                <div class="card shadow-sm">
+                    <div class="card-header">Grievance regitred by Type</div>
+                    <div class="card-body">
+                        <canvas id="lineChartStatus"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
 
     <!-- Scripts para Charts.js -->
     <script>
@@ -170,6 +232,78 @@
                 }
             }
         });
+        
+        // Dados para o gráfico de barras Queixas
+        var ctxBarr = document.getElementById('lineChartQueixas').getContext('2d');
+        var barChartt = new Chart(ctxBarr, {
+            type: 'bar',
+            data: {
+                labels: [], // Serão preenchidas dinamicamente
+                datasets: [{
+                    label: 'Grievance regitred by day',
+                    data: [], // Dados do banco de dados
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        }); 
+        
+        
+        // Dados para o gráfico de barras Statuas
+        var ctxBarrS = document.getElementById('lineChartStatus').getContext('2d');
+        var lineChartStatus = new Chart(ctxBarrS, {
+            type: 'bar',
+            data: {
+                labels: [], // Serão preenchidas dinamicamente
+                datasets: [{
+                    label: 'Grievance regitred by Status',
+                    data: [], // Dados do banco de dados
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+        
+        
+        // Dados para o gráfico de barras Tipos de queixas
+        var ctxBarrT = document.getElementById('TypeChart').getContext('2d');
+        var TypeChart = new Chart(ctxBarrT, {
+            type: 'doughnut',
+            data: {
+                labels: [], // Serão preenchidas dinamicamente
+                datasets: [{
+                    label: 'Grievance regitred by Type',
+                    
+                    data: [], // Dados do banco de dados
+                    backgroundColor: [
+                      'rgb(255, 99, 132)',
+                      'rgb(54, 162, 235)',
+                      'rgb(255, 205, 86)'
+                    ],
+                    
+                    borderWidth: 1
+                }]
+            }           
+        });
+        
+
+      
 
         // Dados para o gráfico de pizza
         var ctxPie = document.getElementById('pieChart').getContext('2d');
@@ -182,6 +316,22 @@
                     data: [], // Dados do banco de dados
                     backgroundColor: ['rgba(255, 99, 132, 0.5)', 'rgba(54, 162, 235, 0.5)'],
                     borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],
+                    borderWidth: 1
+                }]
+            }
+        }); 
+        
+        //Sex Chart
+        var ctxPieSex = document.getElementById('sexChart').getContext('2d');
+        var sexChart = new Chart(ctxPieSex, {
+            type: 'pie',
+            data: {
+                labels: ['Male', 'Female'],
+                datasets: [{
+                    label: 'Grievance by Sex',
+                    data: [], // Dados do banco de dados
+                    backgroundColor: [ 'rgba(54, 162, 235, 0.5)','rgba(255, 99, 132, 0.5)'],
+                    borderColor: [ 'rgba(54, 162, 235, 1)','rgba(255, 99, 132, 1)'],
                     borderWidth: 1
                 }]
             }

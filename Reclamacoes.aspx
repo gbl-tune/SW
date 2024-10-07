@@ -1,4 +1,6 @@
-﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Reclamacoes.aspx.cs" Inherits="SW._Default" %>
+﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Reclamacoes.aspx.cs" Inherits="SW.Reclamacoes" %>
+
+
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <style>
@@ -85,7 +87,7 @@
                             <Columns>
                                 <asp:TemplateField ShowHeader="False">
                                     <ItemTemplate>
-                                        <asp:ImageButton ID="factura" runat="server" CausesValidation="False" CommandName="Editar" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>" ImageUrl="~/fatura.png" Text=" Selecione " />
+                                        <asp:ImageButton ID="factura" runat="server" CausesValidation="False" CommandName="Editar" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>" ImageUrl="~/comment-alt-edit.png" Text=" Selecione " />
                                     </ItemTemplate>
                                     <ItemStyle CssClass="btns_tb" />
                                 </asp:TemplateField>
@@ -98,16 +100,18 @@
                                 </asp:TemplateField>--%>
 
                                 <asp:BoundField DataField="ComplaintNr" HeaderText="ComplaintNr" ReadOnly="True" SortExpression="ComplaintNr" />
+                                <asp:BoundField DataField="ComplaintCode" HeaderText="ComplaintCode" ReadOnly="True" SortExpression="ComplaintCode" />
                                 <asp:BoundField DataField="DateComplaint" DataFormatString="{0:yyyy-MM-dd}" HeaderText="Complaint Date" ReadOnly="True" SortExpression="DateComplaint" />
                                 <asp:BoundField DataField="PAPid" HeaderText="PAP ID" ReadOnly="True" SortExpression="PAPid" />
                                 <asp:BoundField DataField="NameOfComplainant" HeaderText="Name Of Complainant" ReadOnly="True" SortExpression="NameOfComplainant" />
                                 <asp:BoundField DataField="ProjectRelated" HeaderText="Project Related" ReadOnly="True" SortExpression="ProjectRelated" />
                                 <asp:BoundField DataField="TypeofComplaint" HeaderText="Type" ReadOnly="True" SortExpression="TypeofComplaint" />
+                                <asp:BoundField DataField="Status" HeaderText="Status" ReadOnly="True" SortExpression="Status" />
 
 
                                 <asp:TemplateField ShowHeader="False">
                                     <ItemTemplate>
-                                        <asp:ImageButton ID="download" runat="server" CausesValidation="False" CommandName="Download" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>" ImageUrl="~/download (7).png" Text=" Selecione " />
+                                        <asp:ImageButton ID="download" runat="server" CausesValidation="False" CommandName="Download" CommandArgument="<%# ((GridViewRow) Container).RowIndex %>" ImageUrl="~/arrow-small-down.png" Text=" Selecione " />
                                     </ItemTemplate>
                                     <ItemStyle CssClass="btns_tb" />
                                 </asp:TemplateField>
@@ -159,8 +163,8 @@
                                 <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
                                     <div class="accordion-body">
                                         <div class="form-group">
-                                            <label for="FullName">Complaint No :</label>
-                                            <input id="complaintNr" runat="server" class="form-control">
+                                            <%--                                            <label for="FullName">Complaint No :</label>
+                                            <input id="complaintNr" runat="server" class="form-control">--%>
                                             <%--<asp:RequiredFieldValidator ID="rfvCasoNr" runat="server" ControlToValidate="complaintNr" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                                         </div>
 
@@ -172,9 +176,9 @@
 
                                         <div class="form-group">
                                             <label for="Email">PAP Identification No: </label>
-                                            <input id="PAPid" runat="server" class="form-control">
-                                            <%--<asp:RequiredFieldValidator ID="rfvIdReclamacao" runat="server" ControlToValidate="PAPid" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
-                                            <%--                            <asp:RegularExpressionValidator ID="revEmail" runat="server" ControlToValidate="txtEmail" ValidationExpression="\w+@\w+\.\w+" ErrorMessage="Enter a valid email!" ForeColor="Red"></asp:RegularExpressionValidator>--%>
+                                            <%--<input id="PAPid" runat="server" class="form-control">--%>
+                                            <asp:DropDownList ID="ddlSearch" Cssclass="form-control" style="width:300px" runat="server">
+                                            </asp:DropDownList>
                                         </div>
 
                                     </div>
@@ -204,12 +208,17 @@
 
                                         <div class="form-group">
                                             <label for="gender">Gender:</label>
-                                            <input id="gender" runat="server" class="form-control" type="text" />
+
+                                            <select name="gender" class="form-control" runat="server" id="gender">
+                                                <option value=" " selected></option>
+                                                <option value="Male">Male</option>
+                                                <option value="Female">Female</option>
+                                            </select>
                                             <%--<asp:RequiredFieldValidator ID="rfvGender" runat="server" ControlToValidate="gender" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                                         </div>
                                         <div class="form-group">
                                             <label for="phoneNumber">Phone Number:</label>
-                                            <input id="phoneNumber" runat="server" class="form-control" type="tel" />
+                                            <input id="phoneNumber" runat="server" type="text" maxlength="9" class="form-control" pattern="[0-9]*" placeholder="Ex: 820000000" onblur="validarNumero(this)" />
                                             <%--<asp:RequiredFieldValidator ID="rfvPhoneNumber" runat="server" ControlToValidate="phoneNumber" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                                         </div>
                                         <div class="form-group">
@@ -227,8 +236,12 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="Comun">Community/Village:</label>
-                                            <input id="comunity" runat="server" class="form-control">
+                                            <label for="comunity">Community/Village:</label>
+                                            <select name="comunity" class="form-control" runat="server" id="comunity">
+                                                <option value=" " selected></option>
+                                                <option value="...">...</option>
+                                                <option value="...">...</option>
+                                            </select>
                                             <%--<asp:RequiredFieldValidator ID="rfvComunidade" runat="server" ControlToValidate="comunity" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                                         </div>
 
@@ -262,6 +275,7 @@
                                                     <option value="Green Line">Green Line</option>
                                                     <option value="Email">Email</option>
                                                     <option value="SMS">SMS</option>
+                                                    <option value="CRC">CRC</option>
                                                     <option value="Complaint Box">Complaint Box</option>
                                                 </select>
 
@@ -290,14 +304,12 @@
                                                     <label for="pessoaRegistou">Name of the person receiving and recording the grievance (Internal personnel)</label>
                                                     <input type="text" id="internalPerson" class="form-control" runat="server" />
                                                     <%--<asp:RequiredFieldValidator ID="rfvpessoaRegistou" runat="server" ControlToValidate="internalPerson" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
-
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label for="descricao">Description of the Complaint:</label>
                                                     <textarea id="description" runat="server" class="form-control" name="descricao" rows="4"></textarea>
                                                     <%--<asp:RequiredFieldValidator ID="rfvdescricao" runat="server" ControlToValidate="description" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
-
                                                 </div>
 
 
@@ -320,13 +332,9 @@
                                                 <div style="display: flex;">
 
                                                     <div>
-                                                        <h4>PRT 1:</h4>
                                                         <h5>TYPE OF COMPLAINT/SUGGESTION</h5>
 
                                                     </div>
-
-
-
                                                     <select name="cars" runat="server" id="typeOfComplaint">
                                                         <option value=" " selected></option>
                                                         <option value="SOCIAL">SOCIAL</option>
@@ -372,7 +380,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="accordion-item">
+                                <%--   <div class="accordion-item">
                                     <h2 class="accordion-header">
                                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseSix" aria-expanded="false" aria-controls="panelsStayOpen-collapseSix">
                                             Section G: GRIEVANCE REDRESSAL RESPONSE
@@ -384,22 +392,19 @@
                                             <div class="form-group">
                                                 <label for="redressDate">Date of Redress/Investigation(dd/mm/yyyy):</label>
                                                 <input id="redressDate" runat="server" class="form-control" type="date" />
-                                                <%--<asp:RequiredFieldValidator ID="rfvRedressDate" runat="server" ControlToValidate="redressDate" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                                             </div>
                                             <div class="form-group">
                                                 <label for="proposedDecision">Investigation Outcome:</label>
                                                 <textarea id="proposedDecision" runat="server" class="form-control"></textarea>
-                                                <%--<asp:RequiredFieldValidator ID="rfvProposedDecision" runat="server" ControlToValidate="proposedDecision" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                                             </div>
                                             <div class="form-group">
-                                                <label for="outcome">Complainant Accepts the Outcome (select relevant option)</label><%--Radio--%>
+                                                <label for="outcome">Complainant Accepts the Outcome (select relevant option)</label>
                                                 <select name="outcome" runat="server" id="outcome">
                                                     <option value=" " selected></option>
                                                     <option value="Yes">Yes</option>
                                                     <option value="No">No</option>
                                                 </select>
 
-                                                <%--                                                <asp:RequiredFieldValidator ID="rfvOutcome" runat="server" ControlToValidate="outcome" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                                             </div>
                                             <%--  <div class="form-group">
                                                 <label for="complainantName">Name of Complainant (where applicable):</label>
@@ -413,38 +418,32 @@
                                             <div class="form-group">
                                                 <label for="grievanceOfficerSignature">Signature of the Grievance Officer:</label>
                                                 <input id="grievanceOfficerSignature" runat="server" class="form-control" type="text" />
-                                            </div>--%>
+                                            </div>
                                             <div class="form-group">
                                                 <label for="finalDecision">Agreed Remedial Action (please give full details):</label>
                                                 <textarea id="finalDecision" runat="server" class="form-control"></textarea>
-                                                <%--<asp:RequiredFieldValidator ID="rfvFinalDecision" runat="server" ControlToValidate="finalDecision" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                                             </div>
 
                                             <div class="form-group">
                                                 <label for="finalDecision">Remedial Action Implementing Authority:</label>
                                                 <input id="authority" runat="server" class="form-control">
-                                                <%--<asp:RequiredFieldValidator ID="rfvAuto" runat="server" ControlToValidate="authority" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                                             </div>
 
                                             <div class="form-group">
                                                 <label for="finalDecision">Remedial Action Targeted Completed Date: (dd/mm/yyyy)</label>
                                                 <input id="remedialDate" type="date" runat="server" class="form-control">
-                                                <%--<asp:RequiredFieldValidator ID="rfvremedialDate" runat="server" ControlToValidate="remedialDate" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                                             </div>
                                             <div class="form-group">
                                                 <label for="finalDecision">Actual Date of Completion:(dd/mm/yyyy)</label>
                                                 <input id="actualremedialDate" type="date" runat="server" class="form-control">
-                                                <%--<asp:RequiredFieldValidator ID="rfvactualremedialDate" runat="server" ControlToValidate="actualremedialDate" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                                             </div>
                                             <div class="form-group">
                                                 <label for="finalDecision">Person Verifying the Outcome: </label>
                                                 <input id="personVerifying" runat="server" class="form-control">
-                                                <%--<asp:RequiredFieldValidator ID="rfvpersonVerifying" runat="server" ControlToValidate="personVerifying" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                                             </div>
                                             <div class="form-group">
                                                 <label for="finalDecision">Close out date:(dd/mm/yyyy)</label>
                                                 <input id="closeOUt" type="date" runat="server" class="form-control">
-                                                <%--<asp:RequiredFieldValidator ID="rfvcloseOUt" runat="server" ControlToValidate="closeOUt" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                                             </div>
 
                                         </div>
@@ -466,13 +465,10 @@
                                                     <option value="No">No</option>
                                                 </select>
 
-                                                <%--<asp:RequiredFieldValidator ID="rfvEscalation" runat="server" ControlToValidate="escalation" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                                             </div>
                                             <div class="form-group">
                                                 <label for="entityReferred">Entity Referred to:</label>
                                                 <input id="entityReferred" runat="server" class="form-control" type="text" />
-                                                <%--<asp:RequiredFieldValidator ID="rfventityReferred" runat="server" ControlToValidate="entityReferred" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
-
                                             </div>
                                             <div class="form-group">
                                                 <label for="contact">Contact and Name:</label>
@@ -481,36 +477,30 @@
                                             <div class="form-group">
                                                 <label for="dateMentioned">Date Referred:(dd/mm/yyyy):</label>
                                                 <input id="dateMentioned" runat="server" class="form-control" type="date" />
-                                                <%--<asp:RequiredFieldValidator ID="rfvdateMentioned" runat="server" ControlToValidate="dateMentioned" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
-
                                             </div>
                                             <div class="form-group">
                                                 <label for="dateMentioned">Remedial action taken to resolve the case:</label>
                                                 <input id="remedialAction" runat="server" class="form-control" type="date" />
-                                                <%--<asp:RequiredFieldValidator ID="rfvremedialAction" runat="server" ControlToValidate="remedialAction" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
-
                                             </div>
 
                                             <div class="form-group">
                                                 <label for="dateMentioned">Close out date:(dd/mm/yyyy)</label>
                                                 <input id="closeDate" runat="server" class="form-control" type="date" />
-                                                <%--<asp:RequiredFieldValidator ID="rfvcloseDate" runat="server" ControlToValidate="closeDate" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                                             </div>
 
 
 
 
                                         </div>
-                                    </div>
-                                </div>
-
+                                    </div> 
+                                </div>--%>
                             </div>
                         </div>
 
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <asp:Button ID="btnSubmit" runat="server" Text="Next" CssClass="btn" OnClick="btnSubmit_Click" />
+                        <asp:Button ID="btnSubmit" runat="server" Text="Register" CssClass="btn" OnClick="btnSubmit_Click" />
                     </div>
                 </div>
             </div>
@@ -518,8 +508,8 @@
 
 
         <%--modal editar queixa--%>
-        <div class="modal fade" id="editarQueixa"  data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl"   >
+        <div class="modal fade" id="editarQueixa" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="">Atualizar Queixa</h1>
@@ -545,7 +535,7 @@
                                     <div class="accordion-body">
                                         <div class="form-group">
                                             <label for="FullName">Complaint No :</label>
-                                            <input id="complaintNrE" runat="server" class="form-control">
+                                            <input style="pointer-events: none;" id="complaintNrE" runat="server" class="form-control">
                                             <%--                                            <asp:RequiredFieldValidator ID="rfvCasoNr" runat="server" ControlToValidate="complaintNr" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                                         </div>
 
@@ -627,7 +617,7 @@
                                             <label for="relacionado">Project Related Complaint/Suggestion</label>
                                             <div>
 
-                                                <select name="pr" runat="server" clientidmode="Static" id="projectRelatedE">
+                                                <select name="pr" runat="server" class="form-control" id="projectRelatedE">
                                                     <option value=" " selected></option>
                                                     <option value="Yes">Yes</option>
                                                     <option value="No">No</option>
@@ -648,6 +638,7 @@
                                                     <option value="Green Line">Green Line</option>
                                                     <option value="Email">Email</option>
                                                     <option value="SMS">SMS</option>
+                                                    <option value="CRC">CRC</option>
                                                     <option value="Complaint Box">Complaint Box</option>
                                                 </select>
 
@@ -704,7 +695,7 @@
                                                 <div style="display: flex;">
 
                                                     <div>
-                                                        <h4>PRT 1:</h4>
+
                                                         <h5>TYPE OF COMPLAINT/SUGGESTION</h5>
 
                                                     </div>
@@ -764,7 +755,10 @@
                                     </h2>
                                     <div id="panelsStayOpen-collapseTwelve" class="accordion-collapse collapse">
                                         <div class="accordion-body">
-
+                                            <div class="form-group">
+                                                <asp:Label runat="server" AssociatedControlID="ddlEstadoSecG">State:</asp:Label>
+                                                <asp:DropDownList ID="ddlEstadoSecG" runat="server" CssClass="form-control"></asp:DropDownList>
+                                            </div>
                                             <div class="form-group">
                                                 <label for="redressDate">Date of Redress/Investigation(dd/mm/yyyy):</label>
                                                 <input id="redressDateE" runat="server" class="form-control" type="date" />
@@ -806,9 +800,9 @@
                                                 <label for="finalDecision">Agreed Remedial Action (please give full details):</label>
                                                 <textarea id="finalDecisionE" runat="server" class="form-control"></textarea>
                                                 <%--<asp:RequiredFieldValidator ID="rfvFinalDecision" runat="server" ControlToValidate="finalDecision" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
-                                                                                                        <h4>Ficheiro não pode exceder 2MB</h4>
+                                                <h4>Ficheiro não pode exceder 2MB</h4>
                                                 <asp:FileUpload ID="FileUploadIO" runat="server" />
-                                                <asp:Button  runat="server" Text="Upload" OnClick="upload_Click" />
+                                                <asp:Button runat="server" Text="Upload" OnClick="upload_Click" />
 
                                             </div>
 
@@ -876,7 +870,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="dateMentioned">Remedial action taken to resolve the case:</label>
-                                                <input id="remedialActionE" runat="server" class="form-control" type="date" />
+                                                <input id="remedialActionE" runat="server" class="form-control" type="text" />
                                                 <%--<asp:RequiredFieldValidator ID="rfvremedialAction" runat="server" ControlToValidate="remedialAction" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                                             </div>
 
@@ -895,8 +889,8 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <asp:Button ID="btnAtualizar" runat="server" Text="Next" CssClass="btn" OnClick="btnAtualizar_Click" />
+                        <%--<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>--%>
+                        <asp:Button ID="btnAtualizar" runat="server" Text="Update" CssClass="btn" OnClick="btnAtualizar_Click" />
                     </div>
                 </div>
             </div>
@@ -1034,14 +1028,14 @@
             const input7 = document.getElementById('<%= finalDecisionE.ClientID %>');
 
 
-<%--            const input7 = document.getElementById('<%= finalDecisionE.ClientID %>');--%>
+    <%--            const input7 = document.getElementById('<%= finalDecisionE.ClientID %>');--%>
 
 
             // Desabilita os inputs se a opção 2 for selecionada
             if (select.value === 'No') {
-                document.getElementById('<%= escalationE.ClientID %>').value='Yes';
-                toggleInputsSecH()
-                document.getElementById('<%= escalationE.ClientID %>').disabled = false
+                document.getElementById('<%= escalationE.ClientID %>').value = 'Yes';
+        toggleInputsSecH()
+        document.getElementById('<%= escalationE.ClientID %>').disabled = false
 
             }
             if (select.value === 'No' || select.value === ' ') {
@@ -1060,8 +1054,8 @@
                 input5.disabled = false;
                 input6.disabled = false;
                 input7.disabled = false;
-                document.getElementById('<%= escalationE.ClientID %>').disabled=true
-                document.getElementById('<%= escalationE.ClientID %>').value = 'No';
+                document.getElementById('<%= escalationE.ClientID %>').disabled = true
+        document.getElementById('<%= escalationE.ClientID %>').value = 'No';
                 toggleInputsSecH()
             }
         }
@@ -1069,36 +1063,67 @@
         //funcao pra desabilitar campos na edicao
         function desabilitaListaEdicao() {
             document.getElementById('<%= tipoE.ClientID %>').disabled = true
-            document.getElementById('<%= complaintNrE.ClientID %>').disabled = true
-            document.getElementById('<%= dateComplaintE.ClientID %>').disabled = true
-            document.getElementById('<%= PAPidE.ClientID %>').disabled = true
+            ////////document.getElementById('<%= complaintNrE.ClientID %>').disabled = true
+        document.getElementById('<%= dateComplaintE.ClientID %>').disabled = true
+        document.getElementById('<%= PAPidE.ClientID %>').disabled = true
 
 
-            document.getElementById('<%= confidentialityE.ClientID %>').disabled = true
-            document.getElementById('<%= nameOfComplainantE.ClientID %>').disabled = true
-            document.getElementById('<%= genderE.ClientID %>').disabled = true
-            document.getElementById('<%= phoneNumberE.ClientID %>').disabled = true
-            document.getElementById('<%= emailConfidencialE.ClientID %>').disabled = true
-            document.getElementById('<%= complainantAdressE.ClientID %>').disabled = true
-            document.getElementById('<%= comunityE.ClientID %>').disabled = true
-            document.getElementById('<%= distritE.ClientID %>').disabled = true
-            document.getElementById('<%= projectRelatedE.ClientID %>').disabled = true
-            document.getElementById('<%= reportingMethodE.ClientID %>').disabled = true
-            document.getElementById('<%= outroE.ClientID %>').disabled = true
-            document.getElementById('<%= otherMethodE.ClientID %>').disabled = true
+        document.getElementById('<%= confidentialityE.ClientID %>').disabled = true
+        document.getElementById('<%= nameOfComplainantE.ClientID %>').disabled = true
+        document.getElementById('<%= genderE.ClientID %>').disabled = true
+        document.getElementById('<%= phoneNumberE.ClientID %>').disabled = true
+        document.getElementById('<%= emailConfidencialE.ClientID %>').disabled = true
+        document.getElementById('<%= complainantAdressE.ClientID %>').disabled = true
+        document.getElementById('<%= comunityE.ClientID %>').disabled = true
+        document.getElementById('<%= distritE.ClientID %>').disabled = true
+        document.getElementById('<%= projectRelatedE.ClientID %>').disabled = true
+        document.getElementById('<%= reportingMethodE.ClientID %>').disabled = true
+        document.getElementById('<%= outroE.ClientID %>').disabled = true
+        document.getElementById('<%= otherMethodE.ClientID %>').disabled = true
 
 
-            document.getElementById('<%= internalPersonE.ClientID %>').disabled = true
-            document.getElementById('<%= descriptionE.ClientID %>').disabled = true
+        document.getElementById('<%= internalPersonE.ClientID %>').disabled = true
+        document.getElementById('<%= descriptionE.ClientID %>').disabled = true
 
 
-            document.getElementById('<%= typeOfComplaintE.ClientID %>').disabled = true
-            document.getElementById('<%= outrotipoE.ClientID %>').disabled = true
-            document.getElementById('<%= outraClassificacaoE.ClientID %>').disabled = true
-
+        document.getElementById('<%= typeOfComplaintE.ClientID %>').disabled = true
+        document.getElementById('<%= outrotipoE.ClientID %>').disabled = true
+        document.getElementById('<%= outraClassificacaoE.ClientID %>').disabled = true
 
 
         }
 
+
+        // Função para validar o número
+        function validarNumero(element) {
+            // Obtém o valor do campo de input
+            let numero = element.value;
+
+            // Expressão regular para validar o prefixo e comprimento
+            // Prefixos válidos: 82, 83, 84, 85, 86, 87 e 9 dígitos no total
+            let regex = /^(82|83|84|85|86|87)\d{7}$/;
+
+            // Verifica se o valor corresponde à expressão regular
+            if (!regex.test(numero)) {
+                // Exibe uma mensagem de erro e limpa o valor inválido
+                alert("Número inválido! Insira um número com até 9 dígitos começando com 82, 83, 84, 85, 86 ou 87.");
+                element.value = ""; // Limpa o campo de entrada
+                return false;
+            }
+
+            // Número válido
+            return true;
+        }
+
+        ///codigo para o select do PAPid
+        $(document).ready(function () {
+            $('#<%= ddlSearch.ClientID %>').select2({
+                placeholder: "Digite para pesquisar queixas...",
+                minimumInputLength: 1, // Começa a buscar com 1 caractere
+                dropdownParent: $('#novaQueixa')
+
+            });
+        });
     </script>
+
 </asp:Content>
