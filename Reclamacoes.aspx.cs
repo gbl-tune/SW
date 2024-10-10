@@ -687,5 +687,35 @@ namespace SW
 
 
         }
+
+        //qunado e selecionado um PAP deve buscar dados da base de dados e popular os camos da SEC B
+        protected void populate(object sender, EventArgs e)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand("select * from PAP where PAPid='" + ddlSearch.SelectedValue.ToString() + "'", connection))
+                {
+
+                    connection.Open();
+                    using (SqlDataReader sdr = command.ExecuteReader())
+                    {
+                        sdr.Read();
+                        nameOfComplainant.Value = sdr["Nome"].ToString().Trim();
+                        gender.Value = sdr["Gender"].ToString().Trim();
+                        phoneNumber.Value = sdr["Phone"].ToString().Trim();
+                        emailConfidencial.Value = sdr["Email"].ToString().Trim();
+                        complainantAdress.Value = sdr["Adress"].ToString().Trim();
+                        comunity.Value = sdr["Community"].ToString().Trim();
+                        distrit.Value = sdr["District"].ToString().Trim();
+
+
+
+                    }
+                }
+            }
+            string script = "  $(document).ready(function() { $('#novaQueixa').modal('toggle'); });";
+            ClientScript.RegisterStartupScript(this.GetType(), "OpenModal", script, true);
+        }
+        
     }    
 }

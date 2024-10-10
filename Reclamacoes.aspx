@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Reclamacoes.aspx.cs" Inherits="SW.Reclamacoes" %>
+﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master"  AutoEventWireup="true" CodeBehind="Reclamacoes.aspx.cs"  Inherits="SW.Reclamacoes" %>
 
 
 
@@ -177,8 +177,16 @@
                                         <div class="form-group">
                                             <label for="Email">PAP Identification No: </label>
                                             <%--<input id="PAPid" runat="server" class="form-control">--%>
-                                            <asp:DropDownList ID="ddlSearch" Cssclass="form-control" style="width:300px" runat="server">
+                                            <asp:DropDownList ID="ddlSearch" CssClass="form-control" Style="width: 300px" runat="server">
                                             </asp:DropDownList>
+                                            <input type="checkbox" name="is"  onchange="PapRelated()" id="CheckboxPAP" />
+                                            <label for="is" style="display:inline-block">Not PAP </label>
+                                            <select name="parentesco" runat="server" id="parentesco" CssClass="form-control" Style="width: 300px">
+                                                <option value=" " selected></option>
+                                                <option value="Yes">...</option>
+                                                <option value="No">...</option>
+                                            </select>
+                                            <asp:Button ID="Button1" runat="server" Text="Poulate" OnClick="populate" />
                                         </div>
 
                                     </div>
@@ -247,7 +255,7 @@
 
                                         <div class="form-group">
                                             <label for="Distrito">Distrit:</label>
-                                            <input id="distrit" runat="server" class="form-control">
+                                            <input id="distrit" runat="server" value="Cidade de Mucuba" class="form-control">
                                             <%--<asp:RequiredFieldValidator ID="rfvDistrito" runat="server" ControlToValidate="distrit" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                                         </div>
 
@@ -897,10 +905,10 @@
         </div>
 
 
+<button type="button" id="meuBotao" onclick="chamarMetodo()">Clique Aqui</button>
+    <div id="resultado"></div>      
 
-
-
-
+        
 
 
     </main>
@@ -913,6 +921,7 @@
             desabilitaListaEdicao();
             desabilitaListaSecGH()
             toggleInputsSecH()
+            PapRelated()
             //const inputs = document.querySelectorAll('input');
 
             //// Itera sobre os elementos selecionados e imprime o ID ou valor de cada um
@@ -1034,8 +1043,8 @@
             // Desabilita os inputs se a opção 2 for selecionada
             if (select.value === 'No') {
                 document.getElementById('<%= escalationE.ClientID %>').value = 'Yes';
-        toggleInputsSecH()
-        document.getElementById('<%= escalationE.ClientID %>').disabled = false
+                toggleInputsSecH()
+                document.getElementById('<%= escalationE.ClientID %>').disabled = false
 
             }
             if (select.value === 'No' || select.value === ' ') {
@@ -1055,7 +1064,7 @@
                 input6.disabled = false;
                 input7.disabled = false;
                 document.getElementById('<%= escalationE.ClientID %>').disabled = true
-        document.getElementById('<%= escalationE.ClientID %>').value = 'No';
+                document.getElementById('<%= escalationE.ClientID %>').value = 'No';
                 toggleInputsSecH()
             }
         }
@@ -1064,31 +1073,31 @@
         function desabilitaListaEdicao() {
             document.getElementById('<%= tipoE.ClientID %>').disabled = true
             ////////document.getElementById('<%= complaintNrE.ClientID %>').disabled = true
-        document.getElementById('<%= dateComplaintE.ClientID %>').disabled = true
-        document.getElementById('<%= PAPidE.ClientID %>').disabled = true
+            document.getElementById('<%= dateComplaintE.ClientID %>').disabled = true
+            document.getElementById('<%= PAPidE.ClientID %>').disabled = true
 
 
-        document.getElementById('<%= confidentialityE.ClientID %>').disabled = true
-        document.getElementById('<%= nameOfComplainantE.ClientID %>').disabled = true
-        document.getElementById('<%= genderE.ClientID %>').disabled = true
-        document.getElementById('<%= phoneNumberE.ClientID %>').disabled = true
-        document.getElementById('<%= emailConfidencialE.ClientID %>').disabled = true
-        document.getElementById('<%= complainantAdressE.ClientID %>').disabled = true
-        document.getElementById('<%= comunityE.ClientID %>').disabled = true
-        document.getElementById('<%= distritE.ClientID %>').disabled = true
-        document.getElementById('<%= projectRelatedE.ClientID %>').disabled = true
-        document.getElementById('<%= reportingMethodE.ClientID %>').disabled = true
-        document.getElementById('<%= outroE.ClientID %>').disabled = true
-        document.getElementById('<%= otherMethodE.ClientID %>').disabled = true
+            document.getElementById('<%= confidentialityE.ClientID %>').disabled = true
+            document.getElementById('<%= nameOfComplainantE.ClientID %>').disabled = true
+            document.getElementById('<%= genderE.ClientID %>').disabled = true
+            document.getElementById('<%= phoneNumberE.ClientID %>').disabled = true
+            document.getElementById('<%= emailConfidencialE.ClientID %>').disabled = true
+            document.getElementById('<%= complainantAdressE.ClientID %>').disabled = true
+            document.getElementById('<%= comunityE.ClientID %>').disabled = true
+            document.getElementById('<%= distritE.ClientID %>').disabled = true
+            document.getElementById('<%= projectRelatedE.ClientID %>').disabled = true
+            document.getElementById('<%= reportingMethodE.ClientID %>').disabled = true
+            document.getElementById('<%= outroE.ClientID %>').disabled = true
+            document.getElementById('<%= otherMethodE.ClientID %>').disabled = true
 
 
-        document.getElementById('<%= internalPersonE.ClientID %>').disabled = true
-        document.getElementById('<%= descriptionE.ClientID %>').disabled = true
+            document.getElementById('<%= internalPersonE.ClientID %>').disabled = true
+            document.getElementById('<%= descriptionE.ClientID %>').disabled = true
 
 
-        document.getElementById('<%= typeOfComplaintE.ClientID %>').disabled = true
-        document.getElementById('<%= outrotipoE.ClientID %>').disabled = true
-        document.getElementById('<%= outraClassificacaoE.ClientID %>').disabled = true
+            document.getElementById('<%= typeOfComplaintE.ClientID %>').disabled = true
+            document.getElementById('<%= outrotipoE.ClientID %>').disabled = true
+            document.getElementById('<%= outraClassificacaoE.ClientID %>').disabled = true
 
 
         }
@@ -1124,6 +1133,45 @@
 
             });
         });
+
+        function PapRelated() {
+            const ddl = document.getElementById('<%=ddlSearch.ClientID%>')
+            const ddlParent = document.getElementById('<%=parentesco.ClientID%>')
+            const ckbx = document.getElementById('CheckboxPAP')
+
+            if (ckbx.checked) {
+                ddl.disabled = true;
+                ddlParent.disabled = false;
+            } else {
+                ddl.disabled = false;
+                ddlParent.disabled = true;
+            }
+
+        }
+
+
+        //PageMethods.SeuMetodo("valor do parâmetro", onSuccess, onFailure);
+
+        //function onSuccess(result) {
+        //    console.log("Método chamado com sucesso. Resultado: " + result);
+        //}
+
+        //function onFailure(error) {
+        //    console.error("Erro ao chamar o método: " + error.get_message());
+        //}
+
+        //function chamarMetodo() {
+        //    var parametro = "Teste";
+        //    PageMethods.SW_Reclamacoes.MetodoNoCodBehind(parametro, onSuccess, onFailure);
+        //}
+
+        //function onSuccess(result) {
+        //    document.getElementById('resultado').innerHTML = result;
+        //}
+
+        //function onFailure(error) {
+        //    alert("Erro: " + error.get_message());
+        //}
     </script>
 
 </asp:Content>
