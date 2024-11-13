@@ -5,6 +5,8 @@ VisualStudioVersion = 17.10.35027.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SW", "SW.csproj", "{53B3A929-DA91-4264-9880-F4853111F889}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrievanceStatusUpdater", "..\GrievanceStatusUpdater\GrievanceStatusUpdater.csproj", "{85159A9D-AB27-4824-9E70-38648325E37C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{53B3A929-DA91-4264-9880-F4853111F889}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53B3A929-DA91-4264-9880-F4853111F889}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53B3A929-DA91-4264-9880-F4853111F889}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85159A9D-AB27-4824-9E70-38648325E37C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85159A9D-AB27-4824-9E70-38648325E37C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85159A9D-AB27-4824-9E70-38648325E37C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85159A9D-AB27-4824-9E70-38648325E37C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

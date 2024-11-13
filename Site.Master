@@ -15,14 +15,17 @@
     <webopt:BundleReference runat="server" Path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <link href="style.css" rel="stylesheet" />
-    <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
+    <%--<link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />--%>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 
-     <!-- Select2 CSS -->
+    <!-- Select2 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <!-- Select2 JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
 
     <style>
         .loader-wrapper-all {
@@ -132,8 +135,8 @@
                 <asp:ScriptReference Name="WebFormsBundle" />
                 <%--Site Scripts--%>
             </Scripts>
-        
-</asp:ScriptManager>
+
+        </asp:ScriptManager>
 
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
             <div class="container">
@@ -156,7 +159,7 @@
             <aside id="sidebar">
                 <div class="d-flex">
                     <button class="toggle-btn" type="button">
-                        <i class="lni lni-grid-alt"></i>
+                        <i class="fi fi-rr-home"></i>
                     </button>
                     <div class="sidebar-logo">
                         <a href="/DashBoard">DashBoard</a>
@@ -165,15 +168,15 @@
                 <ul class="sidebar-nav">
                     <li class="sidebar-item">
                         <a href="#" class="sidebar-link">
-                            <i class="lni lni-user"></i>
+                            <i class="fi fi-rr-user"></i>
                             <span>Profile</span>
                         </a>
                     </li>
 
-                    <li class="sidebar-item">
+                    <%--<li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
                             data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
-                            <i class="lni lni-protection"></i>
+                            <i class="fi fi-rr-user-gear"></i>
                             <span>Admin</span>
                         </a>
                         <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
@@ -184,11 +187,11 @@
                                 <a href="/CreateUser" class="sidebar-link">Register</a>
                             </li>
                         </ul>
-                    </li>
+                    </li>--%>
                     <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
                             data-bs-target="#multi" aria-expanded="false" aria-controls="multi">
-                            <i class="lni lni-layout"></i>
+                            <i class="fi fi-rr-users-alt"></i>
                             <span>PAPs</span>
                         </a>
                         <ul id="multi" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
@@ -204,7 +207,7 @@
                                         <a href="#" class="sidebar-link">Machambas</a>
                                     </li>
                                     <li class="sidebar-item">
-                                        <a href="#" class="sidebar-link">Fotos</a>
+                                        <a href="/Galerie" class="sidebar-link">Fotos</a>
                                     </li>
                             </li>
                             <li class="sidebar-item">
@@ -216,26 +219,26 @@
                 </li>
                     <li class="sidebar-item">
                         <a href="/Reclamacoes" class="sidebar-link">
-                            <i class="lni lni-popup"></i>
+                            <i class="fi fi-rr-message-alert"></i>
                             <span>Queixas</span>
                         </a>
                     </li>
                 <li class="sidebar-item">
                     <a href="#" class="sidebar-link">
-                        <i class="lni lni-agenda"></i>
+                        <i class="fi fi-rr-newspaper"></i>
                         <span>Relatorios</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="#" class="sidebar-link">
-                        <i class="lni lni-cog"></i>
-                        <span>Setting</span>
+                    <a href="/CreateUser" class="sidebar-link">
+                        <i class="fi fi-rr-user-gear"></i>
+                        <span>Admin</span>
                     </a>
                 </li>
                 </ul>
                 <div class="sidebar-footer">
-                    <a href="#" class="sidebar-link">
-                        <i class="lni lni-exit"></i>
+                    <a href="/Login" class="sidebar-link">
+                        <i class="fi fi-rs-sign-out-alt"></i>
                         <span>Logout</span>
                     </a>
                 </div>

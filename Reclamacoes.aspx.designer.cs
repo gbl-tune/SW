@@ -42,6 +42,15 @@ namespace SW
         protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl dateComplaint;
 
         /// <summary>
+        /// confidentiality control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlSelect confidentiality;
+
+        /// <summary>
         /// ddlSearch control.
         /// </summary>
         /// <remarks>
@@ -51,31 +60,22 @@ namespace SW
         protected global::System.Web.UI.WebControls.DropDownList ddlSearch;
 
         /// <summary>
-        /// parentesco control.
+        /// HHname control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlSelect parentesco;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText HHname;
 
         /// <summary>
-        /// Button1 control.
+        /// HHContact control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button1;
-
-        /// <summary>
-        /// confidentiality control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlSelect confidentiality;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText HHContact;
 
         /// <summary>
         /// nameOfComplainant control.
@@ -105,31 +105,22 @@ namespace SW
         protected global::System.Web.UI.HtmlControls.HtmlInputText phoneNumber;
 
         /// <summary>
-        /// emailConfidencial control.
+        /// parentesco control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl emailConfidencial;
+        protected global::System.Web.UI.HtmlControls.HtmlSelect parentesco;
 
         /// <summary>
-        /// complainantAdress control.
+        /// Button1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText complainantAdress;
-
-        /// <summary>
-        /// comunity control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlSelect comunity;
+        protected global::System.Web.UI.WebControls.Button Button1;
 
         /// <summary>
         /// distrit control.
@@ -141,6 +132,87 @@ namespace SW
         protected global::System.Web.UI.HtmlControls.HtmlInputText distrit;
 
         /// <summary>
+        /// bairro control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlSelect bairro;
+
+        /// <summary>
+        /// zona control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText zona;
+
+        /// <summary>
+        /// quarteirao control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText quarteirao;
+
+        /// <summary>
+        /// cordenadas control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText cordenadas;
+
+        /// <summary>
+        /// distritoC control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText distritoC;
+
+        /// <summary>
+        /// bairroC control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlSelect bairroC;
+
+        /// <summary>
+        /// zonaC control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText zonaC;
+
+        /// <summary>
+        /// quarteiraoC control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText quarteiraoC;
+
+        /// <summary>
+        /// coordenadasC control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText coordenadasC;
+
+        /// <summary>
         /// projectRelated control.
         /// </summary>
         /// <remarks>
@@ -148,6 +220,15 @@ namespace SW
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlSelect projectRelated;
+
+        /// <summary>
+        /// description control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTextArea description;
 
         /// <summary>
         /// reportingMethod control.
@@ -184,15 +265,6 @@ namespace SW
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputText internalPerson;
-
-        /// <summary>
-        /// description control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTextArea description;
 
         /// <summary>
         /// typeOfComplaint control.
@@ -285,6 +357,24 @@ namespace SW
         protected global::System.Web.UI.HtmlControls.HtmlSelect confidentialityE;
 
         /// <summary>
+        /// HHnameE control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText HHnameE;
+
+        /// <summary>
+        /// HHcontactE control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText HHcontactE;
+
+        /// <summary>
         /// nameOfComplainantE control.
         /// </summary>
         /// <remarks>
@@ -312,40 +402,58 @@ namespace SW
         protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl phoneNumberE;
 
         /// <summary>
-        /// emailConfidencialE control.
+        /// parentescoE control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl emailConfidencialE;
+        protected global::System.Web.UI.HtmlControls.HtmlSelect parentescoE;
 
         /// <summary>
-        /// complainantAdressE control.
+        /// distritoE control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText complainantAdressE;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText distritoE;
 
         /// <summary>
-        /// comunityE control.
+        /// bairroE control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText comunityE;
+        protected global::System.Web.UI.HtmlControls.HtmlSelect bairroE;
 
         /// <summary>
-        /// distritE control.
+        /// zonaE control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText distritE;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText zonaE;
+
+        /// <summary>
+        /// quarteiraoE control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText quarteiraoE;
+
+        /// <summary>
+        /// cooredenadasE control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText cooredenadasE;
 
         /// <summary>
         /// projectRelatedE control.
@@ -384,49 +492,49 @@ namespace SW
         protected global::System.Web.UI.HtmlControls.HtmlInputText otherMethodE;
 
         /// <summary>
-        /// internalPersonE control.
+        /// distritoCE control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText internalPersonE;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText distritoCE;
 
         /// <summary>
-        /// descriptionE control.
+        /// bairroCE control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTextArea descriptionE;
+        protected global::System.Web.UI.HtmlControls.HtmlSelect bairroCE;
 
         /// <summary>
-        /// typeOfComplaintE control.
+        /// zonaCE control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlSelect typeOfComplaintE;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText zonaCE;
 
         /// <summary>
-        /// outrotipoE control.
+        /// quarteiraoCE control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox outrotipoE;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText quarteiraoCE;
 
         /// <summary>
-        /// outraClassificacaoE control.
+        /// coordenadasCE control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText outraClassificacaoE;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText coordenadasCE;
 
         /// <summary>
         /// ddlEstadoSecG control.
@@ -447,13 +555,13 @@ namespace SW
         protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl redressDateE;
 
         /// <summary>
-        /// proposedDecisionE control.
+        /// investigationOutcomeE control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTextArea proposedDecisionE;
+        protected global::System.Web.UI.HtmlControls.HtmlTextArea investigationOutcomeE;
 
         /// <summary>
         /// outcomeE control.
@@ -465,13 +573,13 @@ namespace SW
         protected global::System.Web.UI.HtmlControls.HtmlSelect outcomeE;
 
         /// <summary>
-        /// finalDecisionE control.
+        /// proposedDecisionE control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTextArea finalDecisionE;
+        protected global::System.Web.UI.HtmlControls.HtmlTextArea proposedDecisionE;
 
         /// <summary>
         /// FileUploadIO control.
@@ -564,15 +672,6 @@ namespace SW
         protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl dateMentionedE;
 
         /// <summary>
-        /// remedialActionE control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText remedialActionE;
-
-        /// <summary>
         /// closeDateE control.
         /// </summary>
         /// <remarks>
@@ -589,5 +688,77 @@ namespace SW
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnAtualizar;
+
+        /// <summary>
+        /// Button2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button Button2;
+
+        /// <summary>
+        /// hfQueixaId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfQueixaId;
+
+        /// <summary>
+        /// btnTerminar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnTerminar;
+
+        /// <summary>
+        /// btnProximaEtapa control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnProximaEtapa;
+
+        /// <summary>
+        /// Button4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button Button4;
+
+        /// <summary>
+        /// hfQueixaId1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfQueixaId1;
+
+        /// <summary>
+        /// btnYes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnYes;
+
+        /// <summary>
+        /// btnNo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnNo;
     }
 }

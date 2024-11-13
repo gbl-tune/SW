@@ -44,8 +44,40 @@ namespace SW
                 CarregarGraficoSex(con);
                 CarregarGraficoTypes(con);
                 CarregarGraficoStatus(con);
+
+                // Carregar os dados do banco de dados e convertê-los em JSON
+                string jsonData = GetPAPData();
+                ClientScript.RegisterStartupScript(this.GetType(), "initializeMap", $"initializeMap({jsonData});", true);
             }
         }
+
+        private string GetPAPData()
+        {
+            List<object> locations = new List<object>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "SELECT Nome, Latitude, Longitude FROM PAP";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    SqlDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        locations.Add(new
+                        {
+                            CaseID = reader["Nome"].ToString(),
+                            Latitude = reader["Latitude"].ToString(),
+                            Longitude = reader["Longitude"].ToString()
+                        });
+                    }
+                }
+            }
+
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            return serializer.Serialize(locations);
+        }
+
 
         private void CarregarGraficoPAPs(SqlConnection con)
         {

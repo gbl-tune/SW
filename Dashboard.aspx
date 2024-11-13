@@ -46,6 +46,10 @@
                 grid-template-columns: 1fr;
             }
         }
+        #map {
+            height: 500px;
+            width: 100%;
+        }
     </style>
 
     <div class="container-fluid p-3">
@@ -138,6 +142,7 @@
                     <div class="card-header">PAPs registados por local</div>
                     <div class="card-body">
                         <!-- Mapa ou gráfico -->
+                         <div id="map"></div>
                     </div>
                 </div>
             </div>
@@ -210,6 +215,34 @@
 
     <!-- Scripts para Charts.js -->
     <script>
+        //MApa dos PAPS
+
+        function initializeMap(data) {
+            // Inicializa o mapa
+            var map = L.map('map').setView([-16.860101, 36.961566], 10);
+
+            // Adiciona o tile layer
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            // Adiciona marcadores com popups com dados dinâmicos
+            data.forEach(function (item) {
+                var popupContent = `
+                <table border="1" cellpadding="5">
+                    <tr><td>Name</td><td>${item.CaseID}</td></tr>
+                    <tr><td>Latitude</td><td>${item.Latitude}</td></tr>
+                    <tr><td>Longitude</td><td>${item.Longitude}</td></tr>
+                </table>
+                
+            `;
+
+                L.marker([item.Latitude, item.Longitude])
+                    .addTo(map)
+                    .bindPopup(popupContent);
+            });
+        }
+
         // Dados para o gráfico de barras
         var ctxBar = document.getElementById('barChart').getContext('2d');
         var barChart = new Chart(ctxBar, {
@@ -299,7 +332,7 @@
                     
                     borderWidth: 1
                 }]
-            }           
+            }        
         });
         
 

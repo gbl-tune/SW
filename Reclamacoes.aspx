@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master"  AutoEventWireup="true" CodeBehind="Reclamacoes.aspx.cs"  Inherits="SW.Reclamacoes" %>
+﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Reclamacoes.aspx.cs" Inherits="SW.Reclamacoes" %>
 
 
 
@@ -107,7 +107,8 @@
                                 <asp:BoundField DataField="ProjectRelated" HeaderText="Project Related" ReadOnly="True" SortExpression="ProjectRelated" />
                                 <asp:BoundField DataField="TypeofComplaint" HeaderText="Type" ReadOnly="True" SortExpression="TypeofComplaint" />
                                 <asp:BoundField DataField="Status" HeaderText="Status" ReadOnly="True" SortExpression="Status" />
-
+                                <%--                                <asp:BoundField DataField="Atraso" HeaderText="Delay" ReadOnly="True" SortExpression="Delay" />--%>
+                                <asp:ButtonField ButtonType="Button" CommandName="VerificarStatus" Text="Verificar Status" />
 
                                 <asp:TemplateField ShowHeader="False">
                                     <ItemTemplate>
@@ -147,7 +148,7 @@
                     <div class="modal-body">
                         <label for="FullName">Complaint/Suggestion:</label>
 
-                        <select name="confidentiality" runat="server" id="tipo">
+                        <select name="confidentiality" runat="server" onchange="abilitar()" id="tipo">
                             <option value=" " selected></option>
                             <option value="Complaint">Complaint</option>
                             <option value="Suggestion">Suggestion</option>
@@ -173,32 +174,6 @@
                                             <input id="dateComplaint" runat="server" type="date" class="form-control">
                                             <%--<asp:RequiredFieldValidator ID="rfvData" runat="server" ControlToValidate="dateComplaint" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                                         </div>
-
-                                        <div class="form-group">
-                                            <label for="Email">PAP Identification No: </label>
-                                            <%--<input id="PAPid" runat="server" class="form-control">--%>
-                                            <asp:DropDownList ID="ddlSearch" CssClass="form-control" Style="width: 300px" runat="server">
-                                            </asp:DropDownList>
-                                            <input type="checkbox" name="is"  onchange="PapRelated()" id="CheckboxPAP" />
-                                            <label for="is" style="display:inline-block">Not PAP </label>
-                                            <select name="parentesco" runat="server" id="parentesco" CssClass="form-control" Style="width: 300px">
-                                                <option value=" " selected></option>
-                                                <option value="Yes">...</option>
-                                                <option value="No">...</option>
-                                            </select>
-                                            <asp:Button ID="Button1" runat="server" Text="Poulate" OnClick="populate" />
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
-                                            Section B: Geotechnical Location of Complaint/Suggestion
-                                        </button>
-                                    </h2>
-                                    <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
-
                                         <div class="form-group">
                                             <label for="confidentiality">Confidentiality (Yes/No):</label><%--Radio--%>
                                             <select name="confidentiality" runat="server" id="confidentiality" onchange="toggleInputs()">
@@ -207,6 +182,24 @@
                                                 <option value="No">No</option>
                                             </select>
                                             <%--<asp:RequiredFieldValidator ID="rfvConfidentiality" runat="server" ControlToValidate="confidentiality" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="Email">PAP Identification No: </label>
+                                            <%--<input id="PAPid" runat="server" class="form-control">--%>
+                                            <asp:DropDownList ID="ddlSearch" CssClass="form-control" Style="width: 300px" runat="server">
+                                            </asp:DropDownList>
+                                            <input type="checkbox" name="is" onchange="PapRelated()" id="CheckboxPAP" />
+                                            <label for="is" style="display: inline-block">Not PAP </label>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="Provincia">HH Name </label>
+                                            <input id="HHname" runat="server" class="form-control">
+                                            <%--<asp:RequiredFieldValidator ID="rfvnoc"  runat="server" ControlToValidate="nameOfComplainant" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="email">HH Contact:</label>
+                                            <input id="HHContact" runat="server" type="text" maxlength="9" class="form-control" pattern="[0-9]*" placeholder="Ex: 820000000" onblur="validarNumero(this)" />
+                                            <%--<asp:RequiredFieldValidator ID="rfvEmail" runat="server" ControlToValidate="emailConfidencial" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                                         </div>
                                         <div class="form-group">
                                             <label for="Provincia">Name of the Complainant: </label>
@@ -225,33 +218,29 @@
                                             <%--<asp:RequiredFieldValidator ID="rfvGender" runat="server" ControlToValidate="gender" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                                         </div>
                                         <div class="form-group">
-                                            <label for="phoneNumber">Phone Number:</label>
+                                            <label for="phoneNumber">Complainant Contact:</label>
                                             <input id="phoneNumber" runat="server" type="text" maxlength="9" class="form-control" pattern="[0-9]*" placeholder="Ex: 820000000" onblur="validarNumero(this)" />
                                             <%--<asp:RequiredFieldValidator ID="rfvPhoneNumber" runat="server" ControlToValidate="phoneNumber" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                                         </div>
                                         <div class="form-group">
-                                            <label for="email">E-mail:</label>
-                                            <input id="emailConfidencial" runat="server" class="form-control" type="email" />
-                                            <%--<asp:RequiredFieldValidator ID="rfvEmail" runat="server" ControlToValidate="emailConfidencial" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
-                                        </div>
-
-
-
-                                        <div class="form-group">
-                                            <label for="Provincia">Complainant Address:</label>
-                                            <input id="complainantAdress" runat="server" class="form-control">
-                                            <%--<asp:RequiredFieldValidator ID="rfvAdress" runat="server" ControlToValidate="complainantAdress" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="comunity">Community/Village:</label>
-                                            <select name="comunity" class="form-control" runat="server" id="comunity">
+                                            <label for="is" style="display: inline-block">Relationship between complainant and HH: </label>
+                                            <select name="parentesco" runat="server" id="parentesco" cssclass="form-control" style="width: 300px">
                                                 <option value=" " selected></option>
-                                                <option value="...">...</option>
-                                                <option value="...">...</option>
+                                                <option value="Yes">...</option>
+                                                <option value="No">...</option>
                                             </select>
-                                            <%--<asp:RequiredFieldValidator ID="rfvComunidade" runat="server" ControlToValidate="comunity" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
+                                            <asp:Button ID="Button1" runat="server" Text="Populate" OnClick="populate" />
                                         </div>
+
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+                                            Section B: Residence of the Complainant
+                                        </button>
+                                    </h2>
+                                    <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
 
                                         <div class="form-group">
                                             <label for="Distrito">Distrit:</label>
@@ -259,66 +248,144 @@
                                             <%--<asp:RequiredFieldValidator ID="rfvDistrito" runat="server" ControlToValidate="distrit" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                                         </div>
 
+
                                         <div class="form-group">
-                                            <label for="relacionado">Project Related Complaint/Suggestion</label>
-                                            <div>
-
-                                                <select name="pr" runat="server" clientidmode="Static" id="projectRelated">
-                                                    <option value="YES">YES</option>
-                                                    <option value="NOT APPLICABLE">NO</option>
-                                                </select>
-
-                                            </div>
-
-
-                                            <%--                            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtDistrito" ErrorMessage="Gender is required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
+                                            <label for="comunity">Bairro:</label>
+                                            <select name="comunity" class="form-control" runat="server" id="bairro">
+                                                <option value=" " selected></option>
+                                                <option value="...">...</option>
+                                                <option value="...">...</option>
+                                            </select>
+                                            <%--<asp:RequiredFieldValidator ID="rfvComunidade" runat="server" ControlToValidate="comunity" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="Provincia">Unidade/Zona:</label>
+                                            <input id="zona" runat="server" class="form-control">
+                                            <%--<asp:RequiredFieldValidator ID="rfvAdress" runat="server" ControlToValidate="complainantAdress" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="relacionado">Grievance Reporting Method Used(select relevant)</label>
-                                            <div style="display: flex; gap: 10px">
-
-                                                <select name="rm" runat="server" id="reportingMethod">
-                                                    <option value=" " selected></option>
-                                                    <option value="Green Line">Green Line</option>
-                                                    <option value="Email">Email</option>
-                                                    <option value="SMS">SMS</option>
-                                                    <option value="CRC">CRC</option>
-                                                    <option value="Complaint Box">Complaint Box</option>
-                                                </select>
-
-                                                <div>
-                                                    <input type="checkbox" onchange="desabilitaLista()" runat="server" value="Outro" id="outro" name="outro" />
-                                                    <label for="outro">Other</label>
-                                                    <input id="otherMethod" runat="server" class="form-control">
-                                                </div>
-                                                <%--                            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtDistrito" ErrorMessage="Gender is required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
-                                            </div>
-
-
-
+                                            <label for="Provincia">Quarteirão:</label>
+                                            <input id="quarteirao" runat="server" class="form-control">
+                                            <%--<asp:RequiredFieldValidator ID="rfvAdress" runat="server" ControlToValidate="complainantAdress" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                                         </div>
+
+                                        <div class="form-group">
+                                            <label for="Provincia">Coordenadas:</label>
+                                            <input id="cordenadas" runat="server" class="form-control">
+                                            <%--<asp:RequiredFieldValidator ID="rfvAdress" runat="server" ControlToValidate="complainantAdress" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
+                                        </div>
+
+                                        <%--<div class="form-group">
+                                            <label for="comunity">Community/Village:</label>
+                                            <select name="comunity" class="form-control" runat="server" id="comunity">
+                                                <option value=" " selected></option>
+                                                <option value="...">...</option>
+                                                <option value="...">...</option>
+                                            </select>
+                                        </div>--%>
                                     </div>
                                     <div class="accordion-item">
                                         <h2 class="accordion-header">
                                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
-                                                Section C: Brief Description of Complaint/Suggestion
+                                                Section C: Location of Incident
                                             </button>
                                         </h2>
                                         <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse">
                                             <div class="accordion-body">
+                                                <div class="form-group">
+                                                    <label for="Distrito">Distrit:</label>
+                                                    <input id="distritoC" runat="server" value="Cidade de Mucuba" class="form-control">
+                                                    <%--<asp:RequiredFieldValidator ID="rfvDistrito" runat="server" ControlToValidate="distrit" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
+                                                </div>
 
+
+                                                <div class="form-group">
+                                                    <label for="comunity">Bairro:</label>
+                                                    <select name="comunity" class="form-control" runat="server" id="bairroC">
+                                                        <option value=" " selected></option>
+                                                        <option value="...">...</option>
+                                                        <option value="...">...</option>
+                                                    </select>
+                                                    <%--<asp:RequiredFieldValidator ID="rfvComunidade" runat="server" ControlToValidate="comunity" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="Provincia">Unidade/Zona:</label>
+                                                    <input id="zonaC" runat="server" class="form-control">
+                                                    <%--<asp:RequiredFieldValidator ID="rfvAdress" runat="server" ControlToValidate="complainantAdress" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="Provincia">Quarteirão:</label>
+                                                    <input id="quarteiraoC" runat="server" class="form-control">
+                                                    <%--<asp:RequiredFieldValidator ID="rfvAdress" runat="server" ControlToValidate="complainantAdress" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="Provincia">Coordenadas:</label>
+                                                    <input id="coordenadasC" runat="server" class="form-control">
+                                                    <%--<asp:RequiredFieldValidator ID="rfvAdress" runat="server" ControlToValidate="complainantAdress" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
+                                                </div>
+
+                                                <%--<div class="form-group">
+    <label for="comunity">Community/Village:</label>
+    <select name="comunity" class="form-control" runat="server" id="comunity">
+        <option value=" " selected></option>
+        <option value="...">...</option>
+        <option value="...">...</option>
+    </select>
+</div>--%>
+
+
+                                                <div class="form-group">
+                                                    <label for="relacionado">Resettlement Related Complaint/Suggestion: </label>
+                                                    <div>
+
+                                                        <select name="pr" runat="server" clientidmode="Static" id="projectRelated">
+                                                            <option value="YES">YES</option>
+                                                            <option value="NOT APPLICABLE">NO</option>
+                                                        </select>
+
+                                                    </div>
+
+
+                                                    <%--                            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtDistrito" ErrorMessage="Gender is required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="descricao">Description of the Complaint:</label>
+                                                    <textarea id="description" runat="server" class="form-control" name="descricao" rows="4"></textarea>
+                                                    <%--<asp:RequiredFieldValidator ID="rfvdescricao" runat="server" ControlToValidate="description" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="relacionado">Grievance Reporting Method Used(select relevant)</label>
+                                                    <div style="display: flex; gap: 10px">
+
+                                                        <select name="rm" runat="server" id="reportingMethod">
+                                                            <option value=" " selected></option>
+                                                            <option value="Green Line">Green Line</option>
+                                                            <option value="Email">Email</option>
+                                                            <option value="SMS">SMS</option>
+                                                            <option value="CRC">CRC</option>
+                                                            <option value="Complaint Box">Complaint Box</option>
+                                                        </select>
+
+                                                        <div>
+                                                            <input type="checkbox" onchange="desabilitaLista()" runat="server" value="Outro" id="outro" name="outro" />
+                                                            <label for="outro">Other</label>
+                                                            <input id="otherMethod" runat="server" class="form-control">
+                                                        </div>
+                                                        <%--                            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtDistrito" ErrorMessage="Gender is required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
+                                                    </div>
+
+
+
+                                                </div>
                                                 <div class="form-group">
                                                     <label for="pessoaRegistou">Name of the person receiving and recording the grievance (Internal personnel)</label>
                                                     <input type="text" id="internalPerson" class="form-control" runat="server" />
                                                     <%--<asp:RequiredFieldValidator ID="rfvpessoaRegistou" runat="server" ControlToValidate="internalPerson" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                                                 </div>
 
-                                                <div class="form-group">
-                                                    <label for="descricao">Description of the Complaint:</label>
-                                                    <textarea id="description" runat="server" class="form-control" name="descricao" rows="4"></textarea>
-                                                    <%--<asp:RequiredFieldValidator ID="rfvdescricao" runat="server" ControlToValidate="description" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
-                                                </div>
 
 
 
@@ -508,7 +575,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <asp:Button ID="btnSubmit" runat="server" Text="Register" CssClass="btn" OnClick="btnSubmit_Click" />
+                        <asp:Button ID="btnSubmit" runat="server" Text="Register" CssClass="btn" OnClientClick="obgrigatoriedadeNovaQueixa()" OnClick="btnSubmit_Click" />
                     </div>
                 </div>
             </div>
@@ -560,15 +627,6 @@
                                             <%--                            <asp:RegularExpressionValidator ID="revEmail" runat="server" ControlToValidate="txtEmail" ValidationExpression="\w+@\w+\.\w+" ErrorMessage="Enter a valid email!" ForeColor="Red"></asp:RegularExpressionValidator>--%>
                                         </div>
 
-                                    </div>
-                                </div>
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseNine" aria-expanded="false" aria-controls="panelsStayOpen-collapseNine">
-                                            Section B: Geotechnical Location of Complaint/Suggestion
-                                        </button>
-                                    </h2>
-                                    <div id="panelsStayOpen-collapseNine" class="accordion-collapse collapse">
 
                                         <div class="form-group">
                                             <label for="confidentiality">Confidentiality (Yes/No):</label><%--Radio--%>
@@ -578,6 +636,17 @@
                                                 <option value="No">No</option>
                                             </select>
                                             <%--                                            <asp:RequiredFieldValidator ID="rfvConfidentiality" runat="server" ControlToValidate="confidentiality" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="Provincia">HH Name </label>
+                                            <input id="HHnameE" runat="server" class="form-control">
+                                            <%--<asp:RequiredFieldValidator ID="rfvnoc"  runat="server" ControlToValidate="nameOfComplainant" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="email">HH Contact:</label>
+                                            <input id="HHcontactE" runat="server" type="text" maxlength="9" class="form-control" pattern="[0-9]*" placeholder="Ex: 820000000" onblur="validarNumero(this)" />
+                                            <%--<asp:RequiredFieldValidator ID="rfvEmail" runat="server" ControlToValidate="emailConfidencial" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                                         </div>
                                         <div class="form-group">
                                             <label for="Provincia">Name of the Complainant: </label>
@@ -591,35 +660,69 @@
                                             <%--                                            <asp:RequiredFieldValidator ID="rfvGender" runat="server" ControlToValidate="gender" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                                         </div>
                                         <div class="form-group">
-                                            <label for="phoneNumber">Phone Number:</label>
+                                            <label for="phoneNumber">Complainant Contact:</label>
                                             <input id="phoneNumberE" runat="server" class="form-control" type="tel" />
-                                            <%--                                            <asp:RequiredFieldValidator ID="rfvPhoneNumber" runat="server" ControlToValidate="phoneNumber" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
+                                            <%--<asp:RequiredFieldValidator ID="rfvPhoneNumber" runat="server" ControlToValidate="phoneNumber" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                                         </div>
                                         <div class="form-group">
-                                            <label for="email">E-mail:</label>
-                                            <input id="emailConfidencialE" runat="server" class="form-control" type="email" />
-                                            <%--                                            <asp:RequiredFieldValidator ID="rfvEmail" runat="server" ControlToValidate="emailConfidencial" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
+                                            <label for="is" style="display: inline-block">Relationship between complainant and HH: </label>
+                                            <select name="parentesco" runat="server" id="parentescoE" cssclass="form-control" style="width: 300px">
+                                                <option value=" " selected></option>
+                                                <option value="Yes">...</option>
+                                                <option value="No">...</option>
+                                            </select>
+                                            <%--<asp:Button ID="Button5" runat="server" Text="Populate" OnClick="populate" />--%>
                                         </div>
 
 
 
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseNine" aria-expanded="false" aria-controls="panelsStayOpen-collapseNine">
+                                            Section B: Residence of the Complainant
+                                        </button>
+                                    </h2>
+                                    <div id="panelsStayOpen-collapseNine" class="accordion-collapse collapse">
                                         <div class="form-group">
-                                            <label for="Provincia">Complainant Address:</label>
-                                            <input id="complainantAdressE" runat="server" class="form-control">
+                                            <label for="Distrito">Distrit:</label>
+                                            <input id="distritoE" runat="server" value="Cidade de Mucuba" class="form-control">
+                                            <%--<asp:RequiredFieldValidator ID="rfvDistrito" runat="server" ControlToValidate="distrit" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label for="comunity">Bairro:</label>
+                                            <select name="comunity" class="form-control" runat="server" id="bairroE">
+                                                <option value=" " selected></option>
+                                                <option value="...">...</option>
+                                                <option value="...">...</option>
+                                            </select>
+                                            <%--<asp:RequiredFieldValidator ID="rfvComunidade" runat="server" ControlToValidate="comunity" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="Provincia">Unidade/Zona:</label>
+                                            <input id="zonaE" runat="server" class="form-control">
                                             <%--<asp:RequiredFieldValidator ID="rfvAdress" runat="server" ControlToValidate="complainantAdress" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="Comun">Community/Village:</label>
-                                            <input id="comunityE" runat="server" class="form-control">
-                                            <%--<asp:RequiredFieldValidator ID="rfvComunidade" runat="server" ControlToValidate="comunity" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
+                                            <label for="Provincia">Quarteirão:</label>
+                                            <input id="quarteiraoE" runat="server" class="form-control">
+                                            <%--<asp:RequiredFieldValidator ID="rfvAdress" runat="server" ControlToValidate="complainantAdress" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="Distrito">Distrit:</label>
-                                            <input id="distritE" runat="server" class="form-control">
-                                            <%--<asp:RequiredFieldValidator ID="rfvDistrito" runat="server" ControlToValidate="distrit" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
+                                            <label for="Provincia">Coordenadas:</label>
+                                            <input id="cooredenadasE" runat="server" class="form-control">
+                                            <%--<asp:RequiredFieldValidator ID="rfvAdress" runat="server" ControlToValidate="complainantAdress" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                                         </div>
+
+
+
+
+
 
                                         <div class="form-group">
                                             <label for="relacionado">Project Related Complaint/Suggestion</label>
@@ -665,22 +768,44 @@
                                     <div class="accordion-item">
                                         <h2 class="accordion-header">
                                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTen" aria-expanded="false" aria-controls="panelsStayOpen-collapseTen">
-                                                Section C: Brief Description of Complaint/Suggestion
+                                                Section C: Location of Incident
                                             </button>
                                         </h2>
                                         <div id="panelsStayOpen-collapseTen" class="accordion-collapse collapse">
                                             <div class="accordion-body">
 
                                                 <div class="form-group">
-                                                    <label for="pessoaRegistou">Name of the person receiving and recording the grievance (Internal personnel)</label>
-                                                    <input type="text" id="internalPersonE" class="form-control" runat="server" />
-                                                    <%--                                                    <asp:RequiredFieldValidator ID="rfvpessoaRegistou" runat="server" ControlToValidate="internalPerson" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
+                                                    <label for="Distrito">Distrit:</label>
+                                                    <input id="distritoCE" runat="server" value="Cidade de Mucuba" class="form-control">
+                                                    <%--<asp:RequiredFieldValidator ID="rfvDistrito" runat="server" ControlToValidate="distrit" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
+                                                </div>
+
+
+                                                <div class="form-group">
+                                                    <label for="comunity">Bairro:</label>
+                                                    <select name="comunity" class="form-control" runat="server" id="bairroCE">
+                                                        <option value=" " selected></option>
+                                                        <option value="...">...</option>
+                                                        <option value="...">...</option>
+                                                    </select>
+                                                    <%--<asp:RequiredFieldValidator ID="rfvComunidade" runat="server" ControlToValidate="comunity" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="Provincia">Unidade/Zona:</label>
+                                                    <input id="zonaCE" runat="server" class="form-control">
+                                                    <%--<asp:RequiredFieldValidator ID="rfvAdress" runat="server" ControlToValidate="complainantAdress" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <label for="descricao">Description of the Complaint:</label>
-                                                    <textarea id="descriptionE" runat="server" class="form-control" name="descricao" rows="4"></textarea>
-                                                    <%--<asp:RequiredFieldValidator ID="rfvdescricao" runat="server" ControlToValidate="description" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
+                                                    <label for="Provincia">Quarteirão:</label>
+                                                    <input id="quarteiraoCE" runat="server" class="form-control">
+                                                    <%--<asp:RequiredFieldValidator ID="rfvAdress" runat="server" ControlToValidate="complainantAdress" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="Provincia">Coordenadas:</label>
+                                                    <input id="coordenadasCE" runat="server" class="form-control">
+                                                    <%--<asp:RequiredFieldValidator ID="rfvAdress" runat="server" ControlToValidate="complainantAdress" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                                                 </div>
 
 
@@ -691,7 +816,7 @@
                                     </div>
                                 </div>
 
-                                <div class="accordion-item">
+                                <%--                                <div class="accordion-item">
                                     <h2 class="accordion-header">
                                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseEleven" aria-expanded="false" aria-controls="panelsStayOpen-collapseEleven">
                                             Section D: Classification of Complaint (Tick Relevant)
@@ -738,23 +863,10 @@
 
 
 
-                                            <%--                                            <div class="accordion-item">
-                                                <h2 class="accordion-header">
-                                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
-                                                        PART 2: Confidentiality Request
-                                                    </button>
-                                                </h2>
-                                                <div id="collapseFive" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-                                                    <div class="accordion-body">
-
-
-
-                                                    </div>
-                                                </div>
-                                            </div>--%>
+                                        
                                         </div>
                                     </div>
-                                </div>
+                                </div>--%>
                                 <div class="accordion-item">
                                     <h2 class="accordion-header">
                                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwelve" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwelve">
@@ -774,7 +886,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="proposedDecision">Investigation Outcome:</label>
-                                                <textarea id="proposedDecisionE" runat="server" class="form-control"></textarea>
+                                                <textarea id="investigationOutcomeE" runat="server" class="form-control"></textarea>
                                                 <br />
 
                                                 <%--<asp:RequiredFieldValidator ID="rfvProposedDecision" runat="server" ControlToValidate="proposedDecision" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
@@ -805,8 +917,8 @@
                                                 <input id="grievanceOfficerSignature" runat="server" class="form-control" type="text" />
                                             </div>--%>
                                             <div class="form-group">
-                                                <label for="finalDecision">Agreed Remedial Action (please give full details):</label>
-                                                <textarea id="finalDecisionE" runat="server" class="form-control"></textarea>
+                                                <label for="finalDecision">Proposed Remedial Action (please give full details):</label>
+                                                <textarea id="proposedDecisionE" runat="server" class="form-control"></textarea>
                                                 <%--<asp:RequiredFieldValidator ID="rfvFinalDecision" runat="server" ControlToValidate="finalDecision" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                                                 <h4>Ficheiro não pode exceder 2MB</h4>
                                                 <asp:FileUpload ID="FileUploadIO" runat="server" />
@@ -876,43 +988,83 @@
                                                 <input id="dateMentionedE" runat="server" class="form-control" type="date" />
                                                 <%--<asp:RequiredFieldValidator ID="rfvdateMentioned" runat="server" ControlToValidate="dateMentioned" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
                                             </div>
-                                            <div class="form-group">
+                                            <%--  <div class="form-group">
                                                 <label for="dateMentioned">Remedial action taken to resolve the case:</label>
                                                 <input id="remedialActionE" runat="server" class="form-control" type="text" />
                                                 <%--<asp:RequiredFieldValidator ID="rfvremedialAction" runat="server" ControlToValidate="remedialAction" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label for="dateMentioned">Close out date:(dd/mm/yyyy)</label>
-                                                <input id="closeDateE" runat="server" class="form-control" type="date" />
-                                                <%--<asp:RequiredFieldValidator ID="rfvcloseDate" runat="server" ControlToValidate="closeDate" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
-                                            </div>
-
                                         </div>
+
+                                        <div class="form-group">
+                                            <label for="dateMentioned">Close out date:(dd/mm/yyyy)</label>
+                                            <input id="closeDateE" runat="server" class="form-control" type="date" />
+                                            <%--<asp:RequiredFieldValidator ID="rfvcloseDate" runat="server" ControlToValidate="closeDate" ErrorMessage="Required!" ForeColor="Red"></asp:RequiredFieldValidator>--%>
+                                        </div>
+
                                     </div>
                                 </div>
-
                             </div>
-                        </div>
 
+                        </div>
+                    </div>
+<div class="modal-footer">
+                    <%--<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>--%>
+                    <asp:Button ID="btnAtualizar" runat="server" Text="Update" CssClass="btn" OnClick="btnAtualizar_Click" />
+                </div>
+                </div>
+                
+            </div>
+        </div>
+       
+
+
+
+        <div class="modal fade" id="statusModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="">Update Grievance</h1>
+                        <asp:Button ID="Button2" runat="server" CssClass="btn btn-pr close" OnClick="exitModal_Click" Text="&times;" />
+                    </div>
+                    <div class="modal-body">
+                        <asp:HiddenField ID="hfQueixaId" runat="server" />
+                        <p>A queixa está terminada/concluída?</p>
                     </div>
                     <div class="modal-footer">
-                        <%--<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>--%>
-                        <asp:Button ID="btnAtualizar" runat="server" Text="Update" CssClass="btn" OnClick="btnAtualizar_Click" />
+                        <asp:Button ID="btnTerminar" runat="server" CssClass="btn btn-success" Text="Sim, Concluir" OnClick="btnTerminar_Click" />
+                        <asp:Button ID="btnProximaEtapa" runat="server" CssClass="btn btn-warning" Text="Não, Próxima Etapa" OnClick="btnProximaEtapa_Click" />
                     </div>
                 </div>
             </div>
         </div>
 
+        <div class="modal fade" id="Agreed?" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="">Agreed?</h1>
+                        <asp:Button ID="Button4" runat="server" CssClass="btn btn-pr close" OnClick="exitModal_Click" Text="&times;" />
+                    </div>
+                    <div class="modal-body">
+                        <asp:HiddenField ID="hfQueixaId1" runat="server" />
+                        <p>PAP Accepted?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <asp:Button ID="btnYes" runat="server" CssClass="btn btn-success" Text="Sim, Concluir" OnClick="btnYes_Click" />
+                        <asp:Button ID="btnNo" runat="server" CssClass="btn btn-warning" Text="Não, Próxima Etapa" OnClick="btnNo_Click" />
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<button type="button" id="meuBotao" onclick="chamarMetodo()">Clique Aqui</button>
-    <div id="resultado"></div>      
-
-        
-
-
+        <%--<button type="button" id="meuBotao" onclick="chamarMetodo()">Clique Aqui</button>
+    <div id="resultado"></div>      --%>
     </main>
     <script>
+        function openModal() {
+            var modal = new bootstrap.Modal(document.getElementById('statusModal'));
+            modal.show();
+        }
+
         $(document).ready(function () {
             // Reset modal state to ensure it doesn't open automatically
             $('#editarQueixa').modal('hide');
@@ -922,16 +1074,32 @@
             desabilitaListaSecGH()
             toggleInputsSecH()
             PapRelated()
-            //const inputs = document.querySelectorAll('input');
 
-            //// Itera sobre os elementos selecionados e imprime o ID ou valor de cada um
+
+            const inputs = document.getElementById('accordionPanelsStayOpenExample');
+            const sel = document.getElementById('<%= tipo.ClientID %>')
+            if (sel.value === ' ') {
+                inputs.style.display = 'none';
+
+            }
+            // Itera sobre os elementos selecionados e imprime o ID ou valor de cada um
             //inputs.forEach(input => {
             //    input.disabled = true
+            //    console.log(input.id)
 
             //});
         });
 
+        //funcao para habilitar NOVAQUIEXA
+        function abilitar() {
+            if (document.getElementById('<%=tipo.ClientID%>').value != ' ') {
 
+                document.getElementById('accordionPanelsStayOpenExample').style.display = 'block'
+            } else {
+                document.getElementById('accordionPanelsStayOpenExample').style.display = 'none'
+
+            }
+        }
 
         //funcao para desabilitar campos confidencialidade
         function toggleInputs() {
@@ -939,9 +1107,9 @@
             const input1 = document.getElementById('<%= nameOfComplainant.ClientID %>');
             const input2 = document.getElementById('<%= gender.ClientID %>');
             const input3 = document.getElementById('<%= phoneNumber.ClientID %>');
-            const input4 = document.getElementById('<%= emailConfidencial.ClientID %>');
+            <%--const input4 = document.getElementById('<%= emailConfidencial.ClientID %>');
             const input5 = document.getElementById('<%= complainantAdress.ClientID %>');
-            const input6 = document.getElementById('<%= comunity.ClientID %>');
+            const input6 = document.getElementById('<%= comunity.ClientID %>');--%>
             const input7 = document.getElementById('<%= distrit.ClientID %>');
 
 
@@ -970,7 +1138,7 @@
             const select = document.getElementById('<%= escalationE.ClientID %>');
             const input1 = document.getElementById('<%= contactE.ClientID %>');
             const input2 = document.getElementById('<%= dateMentionedE.ClientID %>');
-            const input3 = document.getElementById('<%= remedialActionE.ClientID %>');
+
             const input4 = document.getElementById('<%= closeDateE.ClientID %>');
             const input5 = document.getElementById('<%= entityReferredE.ClientID %>');
 
@@ -980,14 +1148,14 @@
             if (select.value === 'No' || select.value === ' ') {
                 input1.disabled = true;
                 input2.disabled = true;
-                input3.disabled = true;
+
                 input4.disabled = true;
                 input5.disabled = true;
 
             } else {
                 input1.disabled = false;
                 input2.disabled = false;
-                input3.disabled = false;
+
                 input4.disabled = false;
                 input5.disabled = false;
 
@@ -1034,7 +1202,7 @@
             const input4 = document.getElementById('<%= actualremedialDateE.ClientID %>');
             const input5 = document.getElementById('<%= personVerifyingE.ClientID %>');
             const input6 = document.getElementById('<%= closeOUtE.ClientID %>');
-            const input7 = document.getElementById('<%= finalDecisionE.ClientID %>');
+
 
 
     <%--            const input7 = document.getElementById('<%= finalDecisionE.ClientID %>');--%>
@@ -1054,7 +1222,7 @@
                 input4.disabled = true;
                 input5.disabled = true;
                 input6.disabled = true;
-                input7.disabled = true;
+
             } else {
                 input1.disabled = false;
                 input2.disabled = false;
@@ -1062,7 +1230,7 @@
                 input4.disabled = false;
                 input5.disabled = false;
                 input6.disabled = false;
-                input7.disabled = false;
+
                 document.getElementById('<%= escalationE.ClientID %>').disabled = true
                 document.getElementById('<%= escalationE.ClientID %>').value = 'No';
                 toggleInputsSecH()
@@ -1081,23 +1249,22 @@
             document.getElementById('<%= nameOfComplainantE.ClientID %>').disabled = true
             document.getElementById('<%= genderE.ClientID %>').disabled = true
             document.getElementById('<%= phoneNumberE.ClientID %>').disabled = true
-            document.getElementById('<%= emailConfidencialE.ClientID %>').disabled = true
-            document.getElementById('<%= complainantAdressE.ClientID %>').disabled = true
-            document.getElementById('<%= comunityE.ClientID %>').disabled = true
-            document.getElementById('<%= distritE.ClientID %>').disabled = true
+
+           <%-- document.getElementById('<%= comunityE.ClientID %>').disabled = true
+            document.getElementById('<%= distritE.ClientID %>').disabled = true--%>
             document.getElementById('<%= projectRelatedE.ClientID %>').disabled = true
             document.getElementById('<%= reportingMethodE.ClientID %>').disabled = true
             document.getElementById('<%= outroE.ClientID %>').disabled = true
             document.getElementById('<%= otherMethodE.ClientID %>').disabled = true
 
 
-            document.getElementById('<%= internalPersonE.ClientID %>').disabled = true
-            document.getElementById('<%= descriptionE.ClientID %>').disabled = true
+<%--            document.getElementById('<%= internalPersonE.ClientID %>').disabled = true
+            document.getElementById('<%= descriptionE.ClientID %>').disabled = true--%>
 
 
-            document.getElementById('<%= typeOfComplaintE.ClientID %>').disabled = true
+          <%--  document.getElementById('<%= typeOfComplaintE.ClientID %>').disabled = true
             document.getElementById('<%= outrotipoE.ClientID %>').disabled = true
-            document.getElementById('<%= outraClassificacaoE.ClientID %>').disabled = true
+            document.getElementById('<%= outraClassificacaoE.ClientID %>').disabled = true--%>
 
 
         }
@@ -1172,6 +1339,53 @@
         //function onFailure(error) {
         //    alert("Erro: " + error.get_message());
         //}
+
+
+
+
+
+        //obrigatoriedade
+        function obgrigatoriedadeNovaQueixa() {
+            const tipo = document.getElementById('<%= tipo.ClientID %>')
+            const complaintNr = document.getElementById('<%= dateComplaint.ClientID %>')
+
+
+            const confidentiality = document.getElementById('<%= confidentiality.ClientID %>')
+            const nameOfComplainant = document.getElementById('<%= nameOfComplainant.ClientID %>')
+            const gender = document.getElementById('<%= gender.ClientID %>')
+            const phoneNumber = document.gtElementById('<%= phoneNumber.ClientID %>')
+            <%--const emailConfidencial = document.getElementById('<%= emailConfidencial.ClientID %>')
+            const complainantAdress = document.getElementById('<%= complainantAdress.ClientID %>')
+            const comunity = document.getElementById('<%= comunity.ClientID %>')--%>
+            const distrit = document.getElementById('<%= distrit.ClientID %>')
+            const projectRelated = document.getElementById('<%= projectRelated.ClientID %>')
+            const reportingMethod = document.getElementById('<%= reportingMethod.ClientID %>')
+            const outro = document.getElementById('<%= outro.ClientID %>')
+            const otherMethod = document.getElementById('<%= otherMethod.ClientID %>')
+
+
+            const internalPerson = document.getElementById('<%= internalPerson.ClientID %>')
+            const description = document.getElementById('<%= description.ClientID %>')
+
+
+            const typeOfComplaint = document.getElementById('<%= typeOfComplaint.ClientID %>')
+            const outrotipo = document.getElementById('<%= outrotipo.ClientID %>')
+            const outraClassificacao = document.getElementById('<%= outraClassificacao.ClientID %>')
+
+            const campos = []
+
+            campos.push(tipo, complaintNr, confidentiality, nameOfComplainant, gender)
+
+            campos.forEach(campo => {
+                if (campo.value === ' ') {
+                    alert("Complete os campos");
+                    return false;
+                }
+
+
+            });
+
+        }
     </script>
 
 </asp:Content>
