@@ -224,7 +224,7 @@
                         </a>
                     </li>
                 <li class="sidebar-item">
-                    <a href="#" class="sidebar-link">
+                    <a href="/Report" class="sidebar-link">
                         <i class="fi fi-rr-newspaper"></i>
                         <span>Relatorios</span>
                     </a>

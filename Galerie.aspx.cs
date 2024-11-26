@@ -13,120 +13,163 @@ namespace SW
 {
     public partial class WebForm1 : System.Web.UI.Page
     {
-        // String de conexão com o banco de dados
-        private string uploadFolder = "C:\\Users\\gabri\\Pictures\\";
+        // Caminho fixo para as imagens
+        private const string CAMINHO_IMAGENS = @"C:\Images";
+        private const int ItensPorPagina = 12;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                CarregarImagens();
-                // Opcional: carregar uma lista inicial de imagens ou deixar vazio até a pesquisa
+                // Verificar se o diretório existe
+                if (!Directory.Exists(CAMINHO_IMAGENS))
+                {
+                    // Mostrar mensagem de erro se o diretório não existir
+                    MostrarMensagemErro($"Diretório de imagens não encontrado: {CAMINHO_IMAGENS}");
+                    return;
+                }
+
+                CarregarTodasImagens();
             }
         }
+
+        private void MostrarMensagemErro(string mensagem)
+        {
+            // Limpar a fonte de dados
+            rptImagens.DataSource = null;
+            rptImagens.DataBind();
+
+            // Mostrar mensagem de erro
+            Label lblErro = new Label
+            {
+                Text = mensagem,
+                CssClass = "erro-mensagem"
+            };
+
+            // Adicionar a mensagem de erro ao container
+            pnlConteudo.Controls.Add(lblErro);
+        }
+
         protected void btnPesquisar_Click(object sender, EventArgs e)
         {
-            string papid = txtPAPid.Text.Trim();
+            string termoPesquisa = txtPesquisa.Text.Trim().ToLower();
+            CarregarImagensFiltradas(termoPesquisa);
+        }
 
-            // Verifica se o PAPid é válido
-            if (!string.IsNullOrEmpty(papid))
+        private void CarregarTodasImagens()
+        {
+            List<ImagemInfo> imagens = ObterImagens("");
+            BindImagens(imagens);
+        }
+
+        private void CarregarImagensFiltradas(string termoPesquisa)
+        {
+            List<ImagemInfo> imagens = ObterImagens(termoPesquisa);
+            BindImagens(imagens);
+        }
+
+        private void BindImagens(List<ImagemInfo> imagens)
+        {
+            // Implementação de paginação
+            int paginaAtual = 1;
+            if (ViewState["PaginaAtual"] != null)
             {
-                // Carregar e exibir imagens da pasta do PAPid
-                CarregarImagens(papid);
+                paginaAtual = Convert.ToInt32(ViewState["PaginaAtual"]);
             }
-            else
+
+            var imagensPaginadas = imagens
+                .Skip((paginaAtual - 1) * ItensPorPagina)
+                .Take(ItensPorPagina)
+                .ToList();
+
+            // Verificar se há imagens
+            if (!imagensPaginadas.Any())
             {
-                // Limpa a galeria se o PAPid for inválido
-                rptImagens.DataSource = null;
-                rptImagens.DataBind();
+                MostrarMensagemErro("Nenhuma imagem encontrada.");
+                return;
+            }
+
+            rptImagens.DataSource = imagensPaginadas;
+            rptImagens.DataBind();
+
+            // Configurar controles de paginação
+            ConfigurarPaginacao(imagens.Count, paginaAtual);
+        }
+
+        private void ConfigurarPaginacao(int totalImagens, int paginaAtual)
+        {
+            int totalPaginas = (int)Math.Ceiling((double)totalImagens / ItensPorPagina);
+
+            // Configurar botões de paginação
+            btnPaginaAnterior.Enabled = paginaAtual > 1;
+            btnProximaPagina.Enabled = paginaAtual < totalPaginas;
+
+            lblPaginaAtual.Text = $"Página {paginaAtual} de {totalPaginas}";
+            ViewState["PaginaAtual"] = paginaAtual;
+        }
+
+        protected void btnPaginaAnterior_Click(object sender, EventArgs e)
+        {
+            int paginaAtual = Convert.ToInt32(ViewState["PaginaAtual"] ?? 1);
+            if (paginaAtual > 1)
+            {
+                ViewState["PaginaAtual"] = paginaAtual - 1;
+                CarregarImagensFiltradas(txtPesquisa.Text.Trim().ToLower());
             }
         }
 
-        private void CarregarImagens(string papid)
+        protected void btnProximaPagina_Click(object sender, EventArgs e)
         {
-            // Caminho completo da subpasta do PAPid
-            //string folderPath = Server.MapPath(uploadFolder + papid);
-            string folderPath = Path.Combine(uploadFolder, papid);
-
-            // Verifica se a pasta existe
-            if (Directory.Exists(folderPath))
-            {
-                // Obtém os caminhos das imagens na pasta e seleciona até 10 imagens
-                var images = Directory.GetFiles(folderPath)
-                                      .Take(10)
-                              .Select(imgPath => new
-                              {
-                                  ImagePath = uploadFolder + papid + "/" + Path.GetFileName(imgPath)
-                              })
-                              .ToList();
-
-
-                // Vincula os caminhos das imagens ao Repeater para exibição
-                rptImagens.DataSource = images;
-                rptImagens.DataBind();
-            }
-            else
-            {
-                // Limpa o Repeater se a pasta não existir
-                rptImagens.DataSource = null;
-                rptImagens.DataBind();
-            }
+            int paginaAtual = Convert.ToInt32(ViewState["PaginaAtual"] ?? 1);
+            ViewState["PaginaAtual"] = paginaAtual + 1;
+            CarregarImagensFiltradas(txtPesquisa.Text.Trim().ToLower());
         }
-        private void CarregarImagens()
+
+        private List<ImagemInfo> ObterImagens(string filtro)
         {
-            // Caminho completo para a pasta de imagens fora do projeto
-            string pastaDeFotos = "C:\\Users\\gabri\\Pictures\\";
+            List<ImagemInfo> imagens = new List<ImagemInfo>();
 
-            // Verifica se a pasta existe
-            if (Directory.Exists(pastaDeFotos))
+            try
             {
-                // Obtém todos os arquivos de imagem na pasta
-                string[] imagens = Directory.GetFiles(pastaDeFotos, "*.jpg")
-                    .Concat(Directory.GetFiles(pastaDeFotos, "*.png"))
-                    .Concat(Directory.GetFiles(pastaDeFotos, "*.jpeg"))
-                    .Concat(Directory.GetFiles(pastaDeFotos, "*.gif"))
-                    .ToArray();
+                // Extensões de imagem suportadas
+                string[] extensoesPermitidas = { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp" };
 
-                // Converte os caminhos completos para caminhos virtuais
-                var imagensVirtuais = imagens.Select(img =>
-                    pastaDeFotos + Path.GetFileName(img)).ToList();
+                var arquivos = Directory.GetFiles(CAMINHO_IMAGENS)
+                    .Where(f => extensoesPermitidas.Contains(Path.GetExtension(f).ToLower()));
 
-                // Define a fonte de dados para o Repeater
-                ImagemRepeater.DataSource = imagensVirtuais;
-                ImagemRepeater.DataBind();
-            }
-        }
-        protected void Application_BeginRequest(object sender, EventArgs e)
-        {
-            //string caminhoPasta = @"C:\Imagens\MinhaPasta\";
-            string caminhoPasta = "C:\\Users\\gabri\\Pictures\\";
-
-            if (Request.AppRelativeCurrentExecutionFilePath.StartsWith("~/Pictures/"))
-            {
-                string nomeArquivo = Path.GetFileName(Request.AppRelativeCurrentExecutionFilePath);
-                string caminhoCompleto = Path.Combine(caminhoPasta, nomeArquivo);
-
-                if (File.Exists(caminhoCompleto))
+                foreach (string arquivo in arquivos)
                 {
-                    // Envia o arquivo diretamente
-                    Response.Clear();
-                    Response.ContentType = GetContentType(caminhoCompleto);
-                    Response.WriteFile(caminhoCompleto);
-                    Response.End();
+                    string nomeArquivo = Path.GetFileName(arquivo);
+                    string descricao = Path.GetFileNameWithoutExtension(arquivo);
+
+                    // Verificar se o filtro está vazio ou se o nome contém o filtro
+                    if (string.IsNullOrEmpty(filtro) ||
+                        descricao.ToLower().Contains(filtro))
+                    {
+                        imagens.Add(new ImagemInfo
+                        {
+                            NomeArquivo = nomeArquivo,
+                            CaminhoCompleto = arquivo,
+                            Descricao = descricao
+                        });
+                    }
                 }
             }
-        }
-
-        private string GetContentType(string path)
-        {
-            string ext = Path.GetExtension(path).ToLowerInvariant();
-            switch (ext)
+            catch (Exception ex)
             {
-                case ".png": return "image/png";
-                case ".jpg":
-                case ".jpeg": return "image/jpeg";
-                case ".gif": return "image/gif";
-                default: return "application/octet-stream";
+                // Log do erro (você pode substituir por seu método de log)
+                System.Diagnostics.Debug.WriteLine($"Erro ao carregar imagens: {ex.Message}");
             }
+
+            // Ordenar por nome do arquivo
+            return imagens.OrderBy(i => i.NomeArquivo).ToList();
         }
+    }
+
+    public class ImagemInfo
+    {
+        public string NomeArquivo { get; set; }
+        public string CaminhoCompleto { get; set; }
+        public string Descricao { get; set; }
     }
 }

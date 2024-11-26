@@ -15,13 +15,22 @@ namespace SW
     {
 
         /// <summary>
-        /// txtPAPid control.
+        /// pnlConteudo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPAPid;
+        protected global::System.Web.UI.WebControls.Panel pnlConteudo;
+
+        /// <summary>
+        /// txtPesquisa control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPesquisa;
 
         /// <summary>
         /// btnPesquisar control.
@@ -42,21 +51,30 @@ namespace SW
         protected global::System.Web.UI.WebControls.Repeater rptImagens;
 
         /// <summary>
-        /// ImagemRepeater control.
+        /// btnPaginaAnterior control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater ImagemRepeater;
+        protected global::System.Web.UI.WebControls.Button btnPaginaAnterior;
 
         /// <summary>
-        /// imgLocal control.
+        /// lblPaginaAtual control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Image imgLocal;
+        protected global::System.Web.UI.WebControls.Label lblPaginaAtual;
+
+        /// <summary>
+        /// btnProximaPagina control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnProximaPagina;
     }
 }
